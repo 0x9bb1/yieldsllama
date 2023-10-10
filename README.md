@@ -1,7 +1,5 @@
 # yieldsllama
 
-[![CI](https://github.com/0x9bb1/yieldsllama/workflows/CI/badge.svg)](https://github.com/0x9bb1/yieldsllama/actions)
-
 ## Installation
 
 ### Cargo
