@@ -11,6 +11,10 @@ args = ["build", "--release"]
 command = "cp"
 args = ["target/release/yieldsllama", "."]
 
+[tasks.copy.mac]
+command = "cp"
+args = ["target/release/yieldsllama", "."]
+
 [tasks.flow]
 dependencies = [
     "format",
