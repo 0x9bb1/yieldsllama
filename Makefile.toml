@@ -1,0 +1,19 @@
+[tasks.format]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt"]
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.copy.linux]
+command = "cp"
+args = ["target/release/yieldsllama", "."]
+
+[tasks.flow]
+dependencies = [
+    "format",
+    "build",
+    "copy"
+]
