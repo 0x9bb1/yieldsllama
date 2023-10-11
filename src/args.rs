@@ -58,4 +58,8 @@ pub struct Args {
     /// TVL下限
     #[arg(short, long)]
     pub tvl: Option<u128>,
+
+    /// 筛选特定链
+    #[arg(short, long)]
+    pub chain: Option<String>,
 }

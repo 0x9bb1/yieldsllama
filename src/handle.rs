@@ -8,6 +8,7 @@ pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Poo
     let exposure = Exposure::from_str(args.exposure.as_str()).unwrap_or(Exposure::Single);
     let sort = Sort::from_str(args.sort.as_str()).unwrap_or(Sort::Apy);
     let tvl = args.tvl;
+    let chain = args.chain.clone();
 
     data.sort_by(|p, p2| match sort {
         Sort::Tvl => p.tvl_usd.cmp(&p2.tvl_usd),
@@ -29,11 +30,21 @@ pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Poo
         .filter(|pool| {
             let pool_exposure =
                 Exposure::from_str(pool.exposure.as_str()).unwrap_or(Exposure::Other);
-            if let Some(tvl) = tvl {
-                return pool_exposure == exposure && pool.tvl_usd >= tvl;
+            return pool_exposure == exposure;
+        })
+        .filter(|pool| {
+            return if let Some(tvl) = tvl {
+                pool.tvl_usd >= tvl
             } else {
-                return pool_exposure == exposure;
-            }
+                true
+            };
+        })
+        .filter(|pool| {
+            return if let Some(chain) = &chain {
+                pool.chain.eq_ignore_ascii_case(chain)
+            } else {
+                true
+            };
         })
         .take(limit)
         .cloned()
