@@ -1,4 +1,5 @@
 # yieldsllama
+![workflow](https://github.com/0x9bb1/yieldsllama/actions/workflows/rust.yml/badge.svg)
 
 ## Installation
 
