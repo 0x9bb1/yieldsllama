@@ -62,4 +62,8 @@ pub struct Args {
     /// 筛选特定链
     #[arg(short, long)]
     pub chain: Option<String>,
+
+    /// 根据token筛选
+    #[arg(short, long)]
+    pub asset: Option<String>,
 }

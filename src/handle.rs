@@ -9,6 +9,7 @@ pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Poo
     let sort = Sort::from_str(args.sort.as_str()).unwrap_or(Sort::Apy);
     let tvl = args.tvl;
     let chain = args.chain.clone();
+    let token = args.asset.clone();
 
     data.sort_by(|p, p2| match sort {
         Sort::Tvl => p.tvl_usd.cmp(&p2.tvl_usd),
@@ -42,6 +43,13 @@ pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Poo
         .filter(|pool| {
             return if let Some(chain) = &chain {
                 pool.chain.eq_ignore_ascii_case(chain)
+            } else {
+                true
+            };
+        })
+        .filter(|pool| {
+            return if let Some(token) = &token {
+                pool.symbol.eq_ignore_ascii_case(token)
             } else {
                 true
             };
