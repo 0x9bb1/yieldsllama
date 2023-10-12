@@ -1,3 +1,4 @@
+use std::io::BufReader;
 use std::time::Duration;
 
 use tokio::io::AsyncWriteExt;
@@ -13,7 +14,7 @@ pub async fn write(data: &Vec<Pool>) -> anyhow::Result<()> {
 }
 
 pub async fn read() -> anyhow::Result<Option<Vec<Pool>>> {
-    let file = match std::fs::File::open("data.json") {
+    let file = match tokio::fs::File::open("data.json").await {
         Ok(file) => file,
         Err(e) => {
             println!("读取本地data.json文件异常: {}", e);
@@ -22,13 +23,13 @@ pub async fn read() -> anyhow::Result<Option<Vec<Pool>>> {
     };
 
     let twelve_hour = Duration::from_secs(60 * 60 * 12);
-    let metadata = file.metadata()?;
+    let metadata = file.metadata().await?;
     if metadata.modified()?.elapsed()? > twelve_hour {
         println!("本地文件过期");
         return Ok(None);
     }
 
-    let reader = std::io::BufReader::new(file);
+    let reader = BufReader::new(file.into_std().await);
     let data = serde_json::from_reader(reader)?;
 
     Ok(Some(data))
