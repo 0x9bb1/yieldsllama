@@ -45,7 +45,7 @@ impl FromStr for Sort {
 pub struct Args {
     /// 获取前limit条数据
     #[arg(short, long, default_value_t = 10)]
-    pub limit: u8,
+    pub limit: usize,
 
     /// 类型, 可选: single / multi
     #[arg(short, long, default_value = "single")]
