@@ -16,7 +16,7 @@ pub async fn read() -> anyhow::Result<Option<Vec<Pool>>> {
     let file = match std::fs::File::open("data.json") {
         Ok(file) => file,
         Err(e) => {
-            println!("读取本地data.json文件异常: {}", e.to_string());
+            println!("读取本地data.json文件异常: {}", e);
             return Ok(None);
         }
     };

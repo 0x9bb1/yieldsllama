@@ -8,7 +8,7 @@ pub enum PrintMode {
     Text,
 }
 
-pub fn print_result(mode: PrintMode, res: &Vec<Pool>) -> anyhow::Result<()> {
+pub fn print_result(mode: PrintMode, res: &[Pool]) -> anyhow::Result<()> {
     match mode {
         PrintMode::Text => print_text(res)?,
     }
@@ -16,7 +16,7 @@ pub fn print_result(mode: PrintMode, res: &Vec<Pool>) -> anyhow::Result<()> {
 }
 
 /// Print all summary as Text
-fn print_text(res: &Vec<Pool>) -> anyhow::Result<()> {
+fn print_text(res: &[Pool]) -> anyhow::Result<()> {
     let mut table = Table::new();
     table.add_row(row![
         "apy",

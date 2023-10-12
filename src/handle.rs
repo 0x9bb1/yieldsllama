@@ -3,7 +3,7 @@ use crate::request::Pool;
 use std::cmp::Ordering;
 use std::str::FromStr;
 
-pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Pool>> {
+pub async fn handle(args: &Args, data: &mut [Pool]) -> anyhow::Result<Vec<Pool>> {
     let limit = args.limit as usize;
     let exposure = Exposure::from_str(args.exposure.as_str()).unwrap_or(Exposure::Single);
     let sort = Sort::from_str(args.sort.as_str()).unwrap_or(Sort::Apy);
@@ -31,28 +31,28 @@ pub async fn handle(args: &Args, data: &mut Vec<Pool>) -> anyhow::Result<Vec<Poo
         .filter(|pool| {
             let pool_exposure =
                 Exposure::from_str(pool.exposure.as_str()).unwrap_or(Exposure::Other);
-            return pool_exposure == exposure;
+            pool_exposure == exposure
         })
         .filter(|pool| {
-            return if let Some(tvl) = tvl {
+            if let Some(tvl) = tvl {
                 pool.tvl_usd >= tvl
             } else {
                 true
-            };
+            }
         })
         .filter(|pool| {
-            return if let Some(chain) = &chain {
+            if let Some(chain) = &chain {
                 pool.chain.eq_ignore_ascii_case(chain)
             } else {
                 true
-            };
+            }
         })
         .filter(|pool| {
-            return if let Some(token) = &token {
+            if let Some(token) = &token {
                 pool.symbol.eq_ignore_ascii_case(token)
             } else {
                 true
-            };
+            }
         })
         .take(limit)
         .cloned()
